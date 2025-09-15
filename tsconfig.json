@@ -3,6 +3,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "data-access-layer": [
+        "./dist/data-access-layer"
+      ],
+      "environment": [
+        "./dist/environment"
+      ]
+    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -22,5 +30,19 @@
     "typeCheckHostBindings": true,
     "strictTemplates": true
   },
-  "files": []
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/environment/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/environment/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/data-access-layer/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/data-access-layer/tsconfig.spec.json"
+    }
+  ]
 }

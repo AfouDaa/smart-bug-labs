@@ -3,5 +3,57 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "environment": {
+      "projectType": "library",
+      "root": "projects/environment",
+      "sourceRoot": "projects/environment/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/environment/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/environment/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/environment/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "data-access-layer": {
+      "projectType": "library",
+      "root": "projects/data-access-layer",
+      "sourceRoot": "projects/data-access-layer/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/data-access-layer/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/data-access-layer/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/data-access-layer/tsconfig.spec.json"
+          }
+        }
+      }
+    }
   }
 }
