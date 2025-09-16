@@ -1,63 +1,77 @@
-# Environment
+📦 @smartbug/environment
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.0.
+The Environment Library provides a centralized way to manage runtime configuration in Angular applications.
+It helps you define API contexts, hosts, and production flags, making it easy to switch between environments (dev, staging, prod).
 
-## Code scaffolding
+✨ Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+✅ Define environment configuration in one place
 
-```bash
-ng generate component component-name
-```
+✅ Typed with Environment, Context, and Contexts interfaces
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+✅ Injectable EnvironmentService for runtime access
 
-```bash
-ng generate --help
-```
+✅ Works seamlessly with @smartbug/data-access-layer
 
-## Building
 
-To build the library, run:
 
-```bash
-ng build environment
-```
+📦 Installation
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+    npm install @smartbug/environment
 
-### Publishing the Library
+🔧 Setup
 
-Once the project is built, you can publish your library by following these steps:
+   Provide the environment configuration at app bootstrap:
 
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/environment
-   ```
 
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
+    import { provideEnvironment } from '@smartbug/environment';
+    import { bootstrapApplication } from '@angular/platform-browser';
+    import { AppComponent } from './app/app.component';
+    
+    bootstrapApplication(AppComponent, {
+      providers: [
+        provideEnvironment({
+          host: 'http://localhost',
+          production: false,
+          contexts: {
+            api: { name: 'api', port: 8000 }
+          }
+        })
+      ]
+    });
 
-## Running unit tests
+🏗️ Usage
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Inject the Service
 
-```bash
-ng test
-```
+    import { Component, inject } from '@angular/core';
+    import { EnvironmentService } from '@smartbug/environment';
+    
+    @Component({
+      selector: 'app-root',
+      template: `
+        <h1>Environment Info</h1>
+        <p>Host: {{ host }}</p>
+        <p>Production: {{ isProd }}</p>
+      `
+    })
+    export class AppComponent {
+      private readonly env = inject(EnvironmentService);
+    
+      host = this.env.getHost();
+      isProd = this.env.isProduction();
+    }
 
-## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+EnvironmentService
 
-```bash
-ng e2e
-```
+Method	Description
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+    getContext(name)	Returns a specific context by name
+    getContexts()	Returns all defined contexts
+    getHost()	Returns the host string (e.g. http://api)
+    isProduction()	Returns true if running in production mode
 
-## Additional Resources
+⚖️ License
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT © SmartBug Labs
