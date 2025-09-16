@@ -1,63 +1,97 @@
-# DataAccessLayer
+📦 @smartbug/data-access-layer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.0.
+The Data Access Layer (DAL) library provides a standard way to connect Angular applications to REST APIs.
+It abstracts common CRUD operations (findAll, findById, save, update, deleteById) into a reusable APIRepository class.
 
-## Code scaffolding
+✨ Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+✅ Standardized API access layer for Angular apps
 
-```bash
-ng generate component component-name
-```
+✅ Built on Angular HttpClient
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+✅ Uses environment configs from @smartbug/environment
 
-```bash
-ng generate --help
-```
+✅ Extendable with custom repositories
 
-## Building
+✅ Fully typed with generics
 
-To build the library, run:
+📦 Installation
 
-```bash
-ng build data-access-layer
-```
+    npm install @smartbug/data-access-layer @smartbug/environment
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+🔧 Setup
 
-### Publishing the Library
+Import the provider in your app.config.ts or module:
 
-Once the project is built, you can publish your library by following these steps:
+    import { provideDataAccess } from '@smartbug/data-access-layer';
 
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/data-access-layer
-   ```
+    export const appConfig: ApplicationConfig = {
+      providers: [
+        provideDataAccess()
+      ]
+    };
 
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
+Configure environment via @smartbug/environment:
 
-## Running unit tests
+    import { provideEnvironment } from '@smartbug/environment';
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+    bootstrapApplication(AppComponent, {
+      providers: [
+        provideEnvironment({
+          host: 'http://localhost',
+          production: false,
+          contexts: {
+            api: { name: 'api', port: 8000 }
+          }
+        })
+      ]
+    });
 
-```bash
-ng test
-```
+🏗️ Usage
+1. Create a Repository
 
-## Running end-to-end tests
+Extend APIRepository<T> to define your domain model:
 
-For end-to-end (e2e) testing, run:
+    import { Injectable } from '@angular/core';
+    import { APIRepository } from '@smartbug/data-access-layer';
+    
+    export interface User {
+      id: string;
+      name: string;
+      email: string;
+    }
+    
+    @Injectable({ providedIn: 'root' })
+    export class UserRepository extends APIRepository<User> {
+      protected readonly name = 'users';
+    
+      override parse(response: ApiResponse<User>): User[] {
+        return response.data ?? [];
+      }
+    }
 
-```bash
-ng e2e
-```
+2. Use in Components or Services
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+        import { Component, inject, OnInit } from '@angular/core';
+        import { UserRepository } from './user.repository';
+      
+        @Component({
+          selector: 'app-users',
+          template: `
+            <ul>
+              <li *ngFor="let user of users">{{ user.name }} ({{ user.email }})</li>
+            </ul>
+          `
+        })
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+        export class UsersComponent implements OnInit {
+        private readonly repo = inject(UserRepository);
+        users: any[] = [];
+      
+        ngOnInit() {
+          this.repo.findAll().subscribe(data => {
+            this.users = data;
+          });
+        }
+      }
+  
