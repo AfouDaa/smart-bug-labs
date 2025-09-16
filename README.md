@@ -35,18 +35,9 @@ A set of reusable Angular UI components (buttons, sidebars, modals, etc.).
 
 ---
 
-## 🚀 Getting Started
+### 🚀 Getting Started
 
-Clone the repo:
-```bash
-git clone https://github.com/AfouDaa/smart-bug-labs.git
-cd smart-bug-labs
-
-
-
-
-
-🧑‍💻 Usage in a Project
+##🧑‍💻 Usage in a Project
 
 Install from npm:
 
