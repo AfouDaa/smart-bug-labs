@@ -39,13 +39,6 @@ A set of reusable Angular UI components (buttons, sidebars, modals, etc.).
 
 ##🧑‍💻 Usage in a Project
 
-Install from npm:
-
-npm install @smartbug/environment @smartbug/data-access-layer
-
-
-Example setup in main.ts:
-
 import { provideEnvironment } from '@smartbug/environment';
 import { provideDataAccess } from '@smartbug/data-access-layer';
 import { bootstrapApplication } from '@angular/platform-browser';
